@@ -10,7 +10,7 @@ requests
 ## Finished Features / 已完成功能
 **Multi-resolution wallpapers download**
 **多种分辨率壁纸下载**
-
+添加了UHD全高清画质的支持，传递字符串"UHD" 给resolution即可
 **Switching regions**
 **地区切换**
 

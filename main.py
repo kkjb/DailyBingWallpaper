@@ -6,7 +6,13 @@ Created on Sun Oct 13 14:27:10 2019
 """
 
 import bing
+import os
+import sys
 
-bing.save_bing_wallpaper("/home",'1920x1080','zh-cn')
-bing.save_bing_wallpaper("/home",'1920x1200','zh-cn')
-bing.save_bing_wallpaper("/home",'1080x1920','zh-cn')
+path = os.path.split(os.getcwd())[0]
+path = path+"\\home"
+
+bing.save_bing_wallpaper(path,'1920x1080','zh-cn')
+bing.save_bing_wallpaper(path,'1920x1200','zh-cn')
+bing.save_bing_wallpaper(path,'1080x1920','zh-cn')
+bing.save_bing_wallpaper(path,'UHD','zh-cn')
