@@ -50,20 +50,23 @@ def bing_wallpaper_downloader( dirname, market, resolution = "1920x1080", ):
 
 
 #保存图片url地址子模块
-def save_img_url_to_file(dirname,img_url):
+def save_img_url_to_file(dirname,img_url,flag):
     #创建，并追加写入
     filename = dirname + "/" + "daily_bing_img_url.txt"
     local_date = time.strftime("%Y-%m-%d", time.localtime())
     if not os.path.exists(filename): 
         print ('提示：记录文件daily_bing_img_url.txt', filename, '不存在，重新建立', '\n')
+        
+    if flag == 1:
         fw = open(filename, 'a+')
         fw.write(local_date + "\t")
-        fw.write(img_url + "\n")     
+        fw.write("保存成功"+ "\t")
+        fw.write(img_url +"\n")     
         fw.close()
-        
     else:
         fw = open(filename, 'a+')
         fw.write(local_date + "\t")
+        fw.write("保存失败"+ "\t")
         fw.write(img_url +"\n")     
         fw.close()
 
@@ -74,8 +77,8 @@ def download_img(img_url,dirname,market,resolution = "1920x1080"):
     img_url = img_url.replace("1920x1080",resolution)
         
     print('图片地址为：', img_url, '\n')
-    #调用图片url记录保存子模块,保存在文件在根目录下
-    save_img_url_to_file(dirname,img_url)
+    #保留一份根目录地址
+    root_dir = dirname
 
     #按照 地区\年\月\分辨率 归类并创建对应目录
     year = datetime.datetime.now().year
@@ -97,21 +100,27 @@ def download_img(img_url,dirname,market,resolution = "1920x1080"):
     basename = time.strftime("%Y-%m-%d", time.localtime()) + "_" + resolution +"_"+ market + ".jpg"
     # 拼接目录与文件名，得到图片路径
     filepath = os.path.join(dirname, basename)
-    
+
     try:
         # 下载图片并重命名，并保存到文件夹中
         res = requests.get(img_url)
         with open(filepath,'wb') as f:
             f.write(res.content)
-        #urllib.request.urlretrieve(img_url,filepath)
+        #调用图片url记录保存子模块,保存在文件在根目录下
+        save_img_url_to_file(root_dir,img_url,1)
+
     except requests.exceptions.ConnectionError as e:
         print('错误：网络连接失败'+'\n', e, '\n')
+        save_img_url_to_file(root_dir,img_url,0)
     except requests.exceptions.Timeout as e:
         print('错误：连接超时'+'\n', e, '\n')
+        save_img_url_to_file(root_dir,img_url,0)
     except requests.exceptions.HTTPError as e:
         print('错误：非法的HTTP请求'+'\n', e, '\n')
+        save_img_url_to_file(root_dir,img_url,0)
     except requests.exceptions.RequestException as e:
         print('错误：其他错误'+'\n', e, '\n')
+        save_img_url_to_file(root_dir,img_url,0)
     else:
         print("保存", filepath, "成功！", '\n')
 
