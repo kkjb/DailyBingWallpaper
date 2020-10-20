@@ -41,7 +41,7 @@ def bing_wallpaper_downloader( dirname, market, resolution = "1920x1080", ):
 
 
         except Exception as e:
-            print('错误: 无法获取到图片地址，请检查网络链接' + '\n')
+            print('错误: 无法获取到图片地址，请检查网络连接' + '\n')
             
         else:
 
@@ -97,17 +97,21 @@ def download_img(img_url,dirname,market,resolution = "1920x1080"):
     basename = time.strftime("%Y-%m-%d", time.localtime()) + "_" + resolution +"_"+ market + ".jpg"
     # 拼接目录与文件名，得到图片路径
     filepath = os.path.join(dirname, basename)
-
+    
     try:
         # 下载图片并重命名，并保存到文件夹中
         res = requests.get(img_url)
         with open(filepath,'wb') as f:
             f.write(res.content)
         #urllib.request.urlretrieve(img_url,filepath)
-    except IOError as e:
-        print('错误：文件操作失败', e, '\n')
-    except Exception as e:
-        print('错误：', e, '\n')
+    except requests.exceptions.ConnectionError as e:
+        print('错误：网络连接失败'+'\n', e, '\n')
+    except requests.exceptions.Timeout as e:
+        print('错误：连接超时'+'\n', e, '\n')
+    except requests.exceptions.HTTPError as e:
+        print('错误：非法的HTTP请求'+'\n', e, '\n')
+    except requests.exceptions.RequestException as e:
+        print('错误：其他错误'+'\n', e, '\n')
     else:
         print("保存", filepath, "成功！", '\n')
 
