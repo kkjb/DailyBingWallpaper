@@ -22,7 +22,7 @@ VPS自启动脚本
 ## Explanation / 解释
 
 
-bing.py is the core part of this repo, function bing.save_bing_wallpaper provides three parameters, *dirname* , *resolution* and *region*.
+bing.py is the core part of this repo, function bing.save_bing_wallpaper provides three parameters, *dirname* , *region* and *resolution*.
 
 dirname is the position for saving the pictures
 

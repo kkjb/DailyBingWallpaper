@@ -11,8 +11,11 @@ import sys
 
 path = os.path.split(os.getcwd())[0]
 path = path+"\\home"
+if not os.path.exists(path):
+    print ('    提示：文件夹', path, '不存在，重新建立', '\n')
+    os.makedirs(path)
 
-bing.save_bing_wallpaper(path,'1920x1080','zh-cn')
-bing.save_bing_wallpaper(path,'1920x1200','zh-cn')
-bing.save_bing_wallpaper(path,'1080x1920','zh-cn')
-bing.save_bing_wallpaper(path,'UHD','zh-cn')
+bing.bing_wallpaper_downloader(path,'zh-cn','1920x1080')
+bing.bing_wallpaper_downloader(path,'zh-cn','1080x1920')
+bing.bing_wallpaper_downloader(path,'zh-cn','1920x1200')
+bing.bing_wallpaper_downloader(path,'zh-cn','UHD')

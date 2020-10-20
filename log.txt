@@ -1,2 +1,0 @@
-2019-09-26 14:25:14	error: wrong raw_img_url
-2019-09-26 14:25:51	error: wrong raw_img_url
