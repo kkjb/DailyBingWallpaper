@@ -101,28 +101,41 @@ def download_img(img_url,dirname,market,resolution = "1920x1080"):
     # 拼接目录与文件名，得到图片路径
     filepath = os.path.join(dirname, basename)
 
-    try:
-        # 下载图片并重命名，并保存到文件夹中
-        res = requests.get(img_url)
-        with open(filepath,'wb') as f:
-            f.write(res.content)
-        #调用图片url记录保存子模块,保存在文件在根目录下
-        save_img_url_to_file(root_dir,img_url,1)
+    #使用while循环来多次try和catch
+    max_num = 0
+    while max_num < 3:
+        try:
+            # 下载图片并重命名，并保存到文件夹中
+            res = requests.get(img_url)
+            with open(filepath,'wb') as f:
+                f.write(res.content)
+            flag = 1
+                       
+        except requests.exceptions.ConnectionError as e:
+            print('错误：网络连接失败'+'\n', e, '\n')
+            flag = 0
+            max_num += 1
 
-    except requests.exceptions.ConnectionError as e:
-        print('错误：网络连接失败'+'\n', e, '\n')
-        save_img_url_to_file(root_dir,img_url,0)
-    except requests.exceptions.Timeout as e:
-        print('错误：连接超时'+'\n', e, '\n')
-        save_img_url_to_file(root_dir,img_url,0)
-    except requests.exceptions.HTTPError as e:
-        print('错误：非法的HTTP请求'+'\n', e, '\n')
-        save_img_url_to_file(root_dir,img_url,0)
-    except requests.exceptions.RequestException as e:
-        print('错误：其他错误'+'\n', e, '\n')
-        save_img_url_to_file(root_dir,img_url,0)
-    else:
-        print("保存", filepath, "成功！", '\n')
+        except requests.exceptions.Timeout as e:
+            print('错误：连接超时'+'\n', e, '\n')
+            flag = 0
+            max_num += 1
 
+        except requests.exceptions.HTTPError as e:
+            print('错误：非法的HTTP请求'+'\n', e, '\n')
+            flag = 0
+            max_num += 1
+
+        except requests.exceptions.RequestException as e:
+            print('错误：其他错误'+'\n', e, '\n')
+            flag = 0
+            max_num += 1
+
+        else:
+            print("保存", filepath, "成功！", '\n')
+            break
+
+    #调用图片url记录保存子模块,保存在文件在根目录下    
+    save_img_url_to_file(root_dir,img_url,flag)
         
 
