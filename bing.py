@@ -42,11 +42,27 @@ def bing_wallpaper_downloader( dirname, market, resolution = "1920x1080", ):
 
         except Exception as e:
             print('错误: 无法获取到图片地址，请检查网络连接' + '\n')
-            
+            save_error_date(dirname)
         else:
 
             #调用图片保存模块
             download_img(img_url,dirname,market,resolution)
+
+
+# 记录错误日期与保存图片原始地址
+
+def save_error_date(dirname):
+    #创建，并追加写入
+    filename = dirname + "/" + "daily_bing_img_url.txt"
+    local_date = time.strftime("%Y-%m-%d", time.localtime())
+    if not os.path.exists(filename): 
+        print ('提示：记录文件daily_bing_img_url.txt', filename, '不存在，重新建立', '\n')
+        
+    # 创建错误日期日志
+    fw = open(filename, 'a+')
+    fw.write(local_date + "\t")
+    fw.write("无法连接到网络"+ "\n")   
+    fw.close()
 
 
 #保存图片url地址子模块
