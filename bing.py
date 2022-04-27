@@ -59,9 +59,17 @@ def save_error_date(dirname):
         print ('提示：记录文件daily_bing_img_url.txt', filename, '不存在，重新建立', '\n')
         
     # 创建错误日期日志
-    fw = open(filename, 'a+')
+    fw = open(filename, 'r+')
+    #读旧数据
+    old = fw.read()
+    #回归初始位置
+    fw.seek(0)
+    #写新数据
     fw.write(local_date + "\t")
-    fw.write("无法连接到网络"+ "\n")   
+    fw.write("无法连接到网络"+ "\n") 
+    #写旧数据
+    fw.write(old)  
+    #关闭文件指针
     fw.close()
 
 
@@ -74,16 +82,40 @@ def save_img_url_to_file(dirname,img_url,flag):
         print ('提示：记录文件daily_bing_img_url.txt', filename, '不存在，重新建立', '\n')
         
     if flag == 1:
-        fw = open(filename, 'a+')
+        fw = open(filename, 'r+')
+
+        #读旧数据
+        old = fw.read()
+        #回归初始位置
+        fw.seek(0)
+
+        #写新数据
         fw.write(local_date + "\t")
         fw.write("保存成功"+ "\t")
-        fw.write(img_url +"\n")     
+        fw.write(img_url +"\n")
+
+        #写旧数据
+        fw.write(old)  
+
+        #关闭文件指针
         fw.close()
     else:
-        fw = open(filename, 'a+')
+        fw = open(filename, 'r+')
+
+        #读旧数据
+        old = fw.read()
+        #回归初始位置
+        fw.seek(0)
+
+        #写新数据
         fw.write(local_date + "\t")
         fw.write("保存失败"+ "\t")
-        fw.write(img_url +"\n")     
+        fw.write(img_url +"\n")
+
+        #写旧数据
+        fw.write(old)  
+        
+        #关闭文件指针     
         fw.close()
 
 
